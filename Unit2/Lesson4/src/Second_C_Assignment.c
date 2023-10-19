@@ -17,6 +17,7 @@ int main(void) {
 	//HW Arrays:
 
 	//*** EX1 (Write C Program to sum two matrices 2x2) ***
+
 //	float sum[2][2], M1[2][2], M2[2][2];
 //	int i, j;
 //	printf("Enter the elements of the 1st matrix\n");
@@ -27,7 +28,6 @@ int main(void) {
 //			fflush(stdout);
 //			scanf("%f", &M1[i][j]);
 //		}
-//
 //	}
 //	printf("Enter the elements of the 2nd matrix\n");
 //	fflush(stdout);
@@ -37,7 +37,6 @@ int main(void) {
 //			fflush(stdout);
 //			scanf("%f", &M2[i][j]);
 //		}
-//
 //	}
 //	printf("Sum of Matrix:\n");
 //	fflush(stdout);
@@ -133,6 +132,7 @@ int main(void) {
 //	}
 
 	//*** EX5 (Write C Program to search an element in array) ***
+
 //	int Array[50], N, i, searched_n, location = 0;
 //	printf("Enter no of elements : ");
 //	fflush(stdout);

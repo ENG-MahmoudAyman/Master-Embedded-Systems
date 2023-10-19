@@ -66,7 +66,7 @@ int main(void) {
 //	scanf("%d%d",&a,&z);
 //	prime_numbers(a,z);
 
-//	//*** EX2 (Write C Program to calculate factorial using recursion) ***
+ 	//*** EX2 (Write C Program to calculate factorial using recursion) ***
 //	int n;
 //	printf("Enter a positive integer: ");
 //	fflush(stdout);

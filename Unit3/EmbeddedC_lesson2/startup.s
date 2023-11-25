@@ -1,4 +1,5 @@
-.global reset
+@@ Mahmoud Ayman
+.globl reset
 reset:
      ldr sp, = stack_top
 	 bl main

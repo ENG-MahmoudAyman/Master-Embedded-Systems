@@ -1,0 +1,48 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="686" height="505" viewbox="395 45 291 460">
+<line  x1="532" y1="394" x2="533" y2="450" stroke="#000000" stroke-width="1" fill="none"/>
+<polygon  points="533,450 527,441 537,441 " fill="#000000"/>
+<polygon  points="533,450 527,441 537,441 " fill="none" stroke="#000000" stroke-width="1"/>
+<line  x1="532" y1="320" x2="532" y2="364" stroke="#000000" stroke-width="1" fill="none"/>
+<polygon  points="532,364 527,355 536,355 " fill="#000000"/>
+<polygon  points="532,364 527,355 536,355 " fill="none" stroke="#000000" stroke-width="1"/>
+<line  x1="507" y1="174" x2="507" y2="270" stroke="#000000" stroke-width="1" fill="none"/>
+<polygon  points="507,270 502,261 511,261 " fill="#000000"/>
+<polygon  points="507,270 502,261 511,261 " fill="none" stroke="#000000" stroke-width="1"/>
+<line  x1="407" y1="70" x2="407" y2="124" stroke="#000000" stroke-width="1" fill="none"/>
+<polygon  points="407,124 402,115 411,115 " fill="#000000"/>
+<polygon  points="407,124 402,115 411,115 " fill="none" stroke="#000000" stroke-width="1"/>
+<ellipse  cx="407" cy="57" rx="7" ry="7" fill="#000000"/>
+<line  x1="407" y1="65" x2="407" y2="70" stroke="#000000" stroke-width="1" fill="none"/>
+<rect  x="407" y="124" width="100" height="50" rx="5" ry="5" fill="#c1daf1"/>
+<rect  x="407" y="124" width="100" height="50" rx="5" ry="5" fill="none" stroke="#000000" stroke-width="1"/>
+<text  x="448" y="139" style="font-size:12; font-family:SansSerif.bold; font-weight=bold; fill=#000000">init</text>
+<line  x1="407" y1="141" x2="507" y2="141" stroke="#000000" stroke-width="1" fill="none"/>
+<rect  x="470" y="270" width="100" height="50" rx="5" ry="5" fill="#c1daf1"/>
+<rect  x="470" y="270" width="100" height="50" rx="5" ry="5" fill="none" stroke="#000000" stroke-width="1"/>
+<text  x="509" y="285" style="font-size:12; font-family:SansSerif.bold; font-weight=bold; fill=#000000">idle</text>
+<line  x1="470" y1="287" x2="570" y2="287" stroke="#000000" stroke-width="1" fill="none"/>
+<line  x1="532" y1="369" x2="532" y2="364" stroke="#000000" stroke-width="1" fill="none"/>
+<line  x1="532" y1="389" x2="532" y2="394" stroke="#000000" stroke-width="1" fill="none"/>
+<line  x1="447" y1="370" x2="620" y2="370" stroke="#80b4cd" stroke-width="1" fill="none"/>
+<line  x1="620" y1="370" x2="620" y2="390" stroke="#80b4cd" stroke-width="1" fill="none"/>
+<line  x1="447" y1="390" x2="620" y2="390" stroke="#80b4cd" stroke-width="1" fill="none"/>
+<line  x1="447" y1="370" x2="457" y2="380" stroke="#80b4cd" stroke-width="1" fill="none"/>
+<line  x1="447" y1="390" x2="457" y2="380" stroke="#80b4cd" stroke-width="1" fill="none"/>
+<line  x1="446" y1="369" x2="619" y2="369" stroke="#000000" stroke-width="1" fill="none"/>
+<line  x1="619" y1="369" x2="619" y2="389" stroke="#000000" stroke-width="1" fill="none"/>
+<line  x1="446" y1="389" x2="619" y2="389" stroke="#000000" stroke-width="1" fill="none"/>
+<line  x1="446" y1="369" x2="456" y2="379" stroke="#000000" stroke-width="1" fill="none"/>
+<line  x1="446" y1="389" x2="456" y2="379" stroke="#000000" stroke-width="1" fill="none"/>
+<text  x="458" y="384" style="font-size:12; font-family:SansSerif.plain; fill=#000000">DC_Motor_Set_Speed(speed)</text>
+<rect  x="533" y="450" width="100" height="50" rx="5" ry="5" fill="#c1daf1"/>
+<rect  x="533" y="450" width="100" height="50" rx="5" ry="5" fill="none" stroke="#000000" stroke-width="1"/>
+<text  x="570" y="465" style="font-size:12; font-family:SansSerif.bold; font-weight=bold; fill=#000000">busy</text>
+<line  x1="533" y1="467" x2="633" y2="467" stroke="#000000" stroke-width="1" fill="none"/>
+<line  x1="633" y1="468" x2="681" y2="468" stroke="#000000" stroke-width="1" fill="none"/>
+<line  x1="681" y1="468" x2="681" y2="295" stroke="#000000" stroke-width="1" fill="none"/>
+<line  x1="681" y1="295" x2="570" y2="295" stroke="#000000" stroke-width="1" fill="none"/>
+<polygon  points="570,295 578,290 578,299 " fill="#000000"/>
+<polygon  points="570,295 578,290 578,299 " fill="none" stroke="#000000" stroke-width="1"/>
+</svg>

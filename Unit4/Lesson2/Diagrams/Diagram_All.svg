@@ -1,0 +1,47 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1201" height="545" viewbox="179 100 1022 445">
+<rect  x="184" y="105" width="1012" height="435" fill="none" stroke="#000000" stroke-width="1"/>
+<rect  x="185" y="106" width="1010" height="433" fill="#c1daf1"/>
+<text  x="660" y="121" style="font-size:12; font-family:SansSerif.bold; font-weight=bold; fill=#000000">&lt;&lt;block&gt;&gt;</text>
+<text  x="638" y="140" style="font-size:12; font-family:SansSerif.plain; fill=#000000">Collision_Avoidance</text>
+<line  x1="184" y1="146" x2="1196" y2="146" stroke="#000000" stroke-width="1" fill="none"/>
+<line  x1="184" y1="155" x2="1196" y2="155" stroke="#000000" stroke-width="1" fill="none"/>
+<line  x1="184" y1="164" x2="1196" y2="164" stroke="#000000" stroke-width="1" fill="none"/>
+<rect  x="552" y="205" width="250" height="200" fill="none" stroke="#000000" stroke-width="1"/>
+<rect  x="553" y="206" width="248" height="198" fill="#c1daf1"/>
+<text  x="647" y="221" style="font-size:12; font-family:SansSerif.bold; font-weight=bold; fill=#000000">&lt;&lt;block&gt;&gt;</text>
+<text  x="669" y="240" style="font-size:12; font-family:SansSerif.plain; fill=#000000">CA</text>
+<line  x1="552" y1="246" x2="802" y2="246" stroke="#000000" stroke-width="1" fill="none"/>
+<text  x="559" y="263" style="font-size:10; font-family:SansSerif.plain; fill=#000000">- distance = 0 : int;</text>
+<text  x="559" y="277" style="font-size:10; font-family:SansSerif.plain; fill=#000000">- speed = 0 : int;</text>
+<text  x="559" y="291" style="font-size:10; font-family:SansSerif.plain; fill=#000000">- threshold = 50 : int;</text>
+<line  x1="552" y1="297" x2="802" y2="297" stroke="#000000" stroke-width="1" fill="none"/>
+<line  x1="552" y1="306" x2="802" y2="306" stroke="#000000" stroke-width="1" fill="none"/>
+<text  x="559" y="323" style="font-size:10; font-family:SansSerif.plain; fill=#000000">~ in US_Get_Distance(int distance)</text>
+<text  x="559" y="337" style="font-size:10; font-family:SansSerif.plain; fill=#000000">~ out DC_Motor_Set_Speed(int speed)</text>
+<rect  x="873" y="204" width="250" height="200" fill="none" stroke="#000000" stroke-width="1"/>
+<rect  x="874" y="205" width="248" height="198" fill="#c1daf1"/>
+<text  x="968" y="220" style="font-size:12; font-family:SansSerif.bold; font-weight=bold; fill=#000000">&lt;&lt;block&gt;&gt;</text>
+<text  x="971" y="239" style="font-size:12; font-family:SansSerif.plain; fill=#000000">DC_Motor</text>
+<line  x1="873" y1="245" x2="1123" y2="245" stroke="#000000" stroke-width="1" fill="none"/>
+<text  x="880" y="262" style="font-size:10; font-family:SansSerif.plain; fill=#000000">- speed = 0 : int;</text>
+<line  x1="873" y1="268" x2="1123" y2="268" stroke="#000000" stroke-width="1" fill="none"/>
+<line  x1="873" y1="277" x2="1123" y2="277" stroke="#000000" stroke-width="1" fill="none"/>
+<text  x="880" y="294" style="font-size:10; font-family:SansSerif.plain; fill=#000000">~ in DC_Motor_Set_Speed(int speed)</text>
+<rect  x="241" y="204" width="250" height="200" fill="none" stroke="#000000" stroke-width="1"/>
+<rect  x="242" y="205" width="248" height="198" fill="#c1daf1"/>
+<text  x="336" y="220" style="font-size:12; font-family:SansSerif.bold; font-weight=bold; fill=#000000">&lt;&lt;block&gt;&gt;</text>
+<text  x="336" y="239" style="font-size:12; font-family:SansSerif.plain; fill=#000000">US_Sensor</text>
+<line  x1="241" y1="245" x2="491" y2="245" stroke="#000000" stroke-width="1" fill="none"/>
+<text  x="248" y="262" style="font-size:10; font-family:SansSerif.plain; fill=#000000">- distance = 0 : int;</text>
+<line  x1="241" y1="268" x2="491" y2="268" stroke="#000000" stroke-width="1" fill="none"/>
+<line  x1="241" y1="277" x2="491" y2="277" stroke="#000000" stroke-width="1" fill="none"/>
+<text  x="248" y="294" style="font-size:10; font-family:SansSerif.plain; fill=#000000">~ out US_Get_Distance(int distance)</text>
+<rect  x="547" y="300" width="9" height="9" fill="#000000"/>
+<rect  x="486" y="299" width="9" height="9" fill="#000000"/>
+<line  x1="496" y1="304" x2="547" y2="304" stroke="#000000" stroke-width="1" fill="none"/>
+<rect  x="868" y="299" width="9" height="9" fill="#000000"/>
+<rect  x="797" y="300" width="9" height="9" fill="#000000"/>
+<line  x1="807" y1="304" x2="868" y2="304" stroke="#000000" stroke-width="1" fill="none"/>
+</svg>

@@ -1,0 +1,6 @@
+"MCAL_Stm32F103x8/EXTI_Stm32F103x8/EXTI_Stm32F103x8.o"
+"MCAL_Stm32F103x8/GPIO_Stm32F103x8/GPIO_Stm32F103x8.o"
+"Src/main.o"
+"Src/syscalls.o"
+"Src/sysmem.o"
+"Startup/startup_stm32f103c6tx.o"

@@ -1,0 +1,12 @@
+EXTI_Stm32F103x8.c:26:6:NVIC_Enable	16	static
+EXTI_Stm32F103x8.c:60:6:NVIC_Disable	16	static
+EXTI_Stm32F103x8.c:102:6:MCAL_EXTI_ALL_DeInit	4	static
+EXTI_Stm32F103x8.c:126:6:MCAL_EXTI_Init	32	static
+EXTI_Stm32F103x8.c:166:6:MCAL_EXTI_Update	16	static
+EXTI_Stm32F103x8.c:176:6:EXTI0_IRQHandler	8	static
+EXTI_Stm32F103x8.c:182:6:EXTI1_IRQHandler	8	static
+EXTI_Stm32F103x8.c:188:6:EXTI2_IRQHandler	8	static
+EXTI_Stm32F103x8.c:194:6:EXTI3_IRQHandler	8	static
+EXTI_Stm32F103x8.c:200:6:EXTI4_IRQHandler	8	static
+EXTI_Stm32F103x8.c:206:6:EXTI9_5_IRQHandler	8	static
+EXTI_Stm32F103x8.c:214:6:EXTI15_10_IRQHandler	8	static

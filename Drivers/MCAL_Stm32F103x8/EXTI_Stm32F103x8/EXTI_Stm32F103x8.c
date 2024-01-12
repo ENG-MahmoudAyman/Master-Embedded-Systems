@@ -124,6 +124,7 @@ void MCAL_EXTI_ALL_DeInit(void){
 * Note              - (LQFP48 --> Port A & B Fully included -- Port C & D Partially included)
 */
 void MCAL_EXTI_Init(EXTI_PinConfig_t* EXTI_Config){
+	AFIO_CLK_EN();//AFIO Clock Enable
 	//Init Pin to be GPIO Input AFIO
 	GPIO_PinConfig_t GPIO_Config = {EXTI_Config->EXTI_PIN.GPIO_PIN,GPIO_MODE_INPUT_AF,};
 	MCAL_GPIO_Init(EXTI_Config->EXTI_PIN.GPIOPort,&GPIO_Config);
@@ -141,7 +142,7 @@ void MCAL_EXTI_Init(EXTI_PinConfig_t* EXTI_Config){
 	EXTI->RTSR |= ((EXTI_Config->EXTI_Trigger_Case & 0b01)<<EXTI_Config->EXTI_PIN.EXTI_InputLineNumber);
 	EXTI->FTSR |= (((EXTI_Config->EXTI_Trigger_Case & 0b010)>>1)<<(EXTI_Config->EXTI_PIN.EXTI_InputLineNumber));
 	//update IRQ handling CallBack function
-	GP_IRQ_CallBack[EXTI_Config->EXTI_PIN.EXTI_InputLineNumber] = EXTI_Config->P_IRQ_CallBack;
+	GP_IRQ_EXTI_CallBack[EXTI_Config->EXTI_PIN.EXTI_InputLineNumber] = EXTI_Config->P_IRQ_CallBack;
 	//Enable/Disable IRQ EXTI & NVIC
 	if(EXTI_Config->EXTI_IRQ == EXTI_IRQ_Enable){
 		//EXTI Enable
@@ -177,46 +178,46 @@ void EXTI0_IRQHandler(void){
 	//clearing Interrupt by writing a ‘1’ into the PR register
 	EXTI->PR|=(1<<0);
 	//call the IRQ_Call_Function
-	GP_IRQ_CallBack[0]();
+	GP_IRQ_EXTI_CallBack[0]();
 }
 void EXTI1_IRQHandler(void){
 	//clearing Interrupt by writing a ‘1’ into the PR register
 	EXTI->PR|=(1<<1);
 	//call the IRQ_Call_Function
-	GP_IRQ_CallBack[1]();
+	GP_IRQ_EXTI_CallBack[1]();
 }
 void EXTI2_IRQHandler(void){
 	//clearing Interrupt by writing a ‘1’ into the PR register
 	EXTI->PR|=(1<<2);
 	//call the IRQ_Call_Function
-	GP_IRQ_CallBack[2]();
+	GP_IRQ_EXTI_CallBack[2]();
 }
 void EXTI3_IRQHandler(void){
 	//clearing Interrupt by writing a ‘1’ into the PR register
 	EXTI->PR|=(1<<3);
 	//call the IRQ_Call_Function
-	GP_IRQ_CallBack[3]();
+	GP_IRQ_EXTI_CallBack[3]();
 }
 void EXTI4_IRQHandler(void){
 	//clearing Interrupt by writing a ‘1’ into the PR register
 	EXTI->PR|=(1<<4);
 	//call the IRQ_Call_Function
-	GP_IRQ_CallBack[4]();
+	GP_IRQ_EXTI_CallBack[4]();
 }
 void EXTI9_5_IRQHandler(void){
 	//clearing Interrupt by writing a ‘1’ into the PR register
-	if(EXTI->PR &(1<<5)){EXTI->PR|=(1<<5);GP_IRQ_CallBack[5]();}
-	if(EXTI->PR &(1<<6)){EXTI->PR|=(1<<6);GP_IRQ_CallBack[6]();}
-	if(EXTI->PR &(1<<7)){EXTI->PR|=(1<<7);GP_IRQ_CallBack[7]();}
-	if(EXTI->PR &(1<<8)){EXTI->PR|=(1<<8);GP_IRQ_CallBack[8]();}
-	if(EXTI->PR &(1<<9)){EXTI->PR|=(1<<9);GP_IRQ_CallBack[9]();}
+	if(EXTI->PR &(1<<5)){EXTI->PR|=(1<<5);GP_IRQ_EXTI_CallBack[5]();}
+	if(EXTI->PR &(1<<6)){EXTI->PR|=(1<<6);GP_IRQ_EXTI_CallBack[6]();}
+	if(EXTI->PR &(1<<7)){EXTI->PR|=(1<<7);GP_IRQ_EXTI_CallBack[7]();}
+	if(EXTI->PR &(1<<8)){EXTI->PR|=(1<<8);GP_IRQ_EXTI_CallBack[8]();}
+	if(EXTI->PR &(1<<9)){EXTI->PR|=(1<<9);GP_IRQ_EXTI_CallBack[9]();}
 }
 void EXTI15_10_IRQHandler(void){
 	//clearing Interrupt by writing a ‘1’ into the PR register
-	if(EXTI->PR &(1<<10)){EXTI->PR|=(1<<10);GP_IRQ_CallBack[10]();}
-	if(EXTI->PR &(1<<11)){EXTI->PR|=(1<<11);GP_IRQ_CallBack[11]();}
-	if(EXTI->PR &(1<<12)){EXTI->PR|=(1<<12);GP_IRQ_CallBack[12]();}
-	if(EXTI->PR &(1<<13)){EXTI->PR|=(1<<13);GP_IRQ_CallBack[13]();}
-	if(EXTI->PR &(1<<14)){EXTI->PR|=(1<<14);GP_IRQ_CallBack[14]();}
-	if(EXTI->PR &(1<<15)){EXTI->PR|=(1<<15);GP_IRQ_CallBack[15]();}
+	if(EXTI->PR &(1<<10)){EXTI->PR|=(1<<10);GP_IRQ_EXTI_CallBack[10]();}
+	if(EXTI->PR &(1<<11)){EXTI->PR|=(1<<11);GP_IRQ_EXTI_CallBack[11]();}
+	if(EXTI->PR &(1<<12)){EXTI->PR|=(1<<12);GP_IRQ_EXTI_CallBack[12]();}
+	if(EXTI->PR &(1<<13)){EXTI->PR|=(1<<13);GP_IRQ_EXTI_CallBack[13]();}
+	if(EXTI->PR &(1<<14)){EXTI->PR|=(1<<14);GP_IRQ_EXTI_CallBack[14]();}
+	if(EXTI->PR &(1<<15)){EXTI->PR|=(1<<15);GP_IRQ_EXTI_CallBack[15]();}
 }

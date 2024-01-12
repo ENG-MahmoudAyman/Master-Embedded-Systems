@@ -1,0 +1,4 @@
+RCC_Stm32F103x8.c:17:8:MCAL_RCC_GetSYSCLK_Freq	4	static
+RCC_Stm32F103x8.c:43:8:MCAL_RCC_GetHCLK_Freq	8	static
+RCC_Stm32F103x8.c:48:8:MCAL_RCC_GetPCLK1_Freq	8	static
+RCC_Stm32F103x8.c:53:8:MCAL_RCC_GetPCLK2_Freq	8	static

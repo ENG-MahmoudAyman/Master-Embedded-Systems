@@ -62,6 +62,11 @@ uint8 Get_CRLH_Position(uint16 PinNumber){
 * Note              - (LQFP48 --> Port A & B Fully included -- Port C & D Partially included)
 */
 void MCAL_GPIO_Init(GPIO_TypeDef *GPIOx,GPIO_PinConfig_t *PinConfig){
+	if(GPIOx == GPIOA){GPIOA_CLK_EN();}
+	else if(GPIOx == GPIOB){GPIOB_CLK_EN();}
+	else if(GPIOx == GPIOC){GPIOC_CLK_EN();}
+	else if(GPIOx == GPIOD){GPIOD_CLK_EN();}
+	else if(GPIOx == GPIOE){GPIOE_CLK_EN();}
 	//Port configuration register low (GPIOx_CRL) (x=A..E) Pin 0 >>> 7
 	//Port configuration register low (GPIOx_CRH) (x=A..E) Pin 8 >>> 15
 	vuint32 *ConfigReg = NULL;

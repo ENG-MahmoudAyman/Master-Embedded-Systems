@@ -23,14 +23,17 @@
 #include "Stm32F103x8.h"
 #include "GPIO_Stm32F103x8.h"
 #include "EXTI_Stm32F103x8.h"
+#include "UART_Stm32F103x8.h"
 
 #define frequency 8000000UL
-#define EXTI_Test
-void MyIRQHandler(void);
-//GPIO_PinConfig_t PB13 = {GPIO_PIN_13,GPIO_MODE_OUTPUT_PP,GPIO_Output_Speed_10M};
-GPIO_PinConfig_t PB1 = {GPIO_PIN_1,GPIO_MODE_OUTPUT_PP,GPIO_Output_Speed_10M};
-//GPIO_PinConfig_t PA13 = {GPIO_PIN_13,GPIO_MODE_INPUT_FLO,};
-//GPIO_PinConfig_t PA1 = {GPIO_PIN_1,GPIO_MODE_INPUT_FLO,};
+#define UART_Test
+	uint8 Character;
+void MyIRQHandler(void){
+	if (Rcomplete(USART1)) {
+		MCAL_USART_Read(USART1, (uint16*) &(Character), Disable);
+		MCAL_UART_Send(USART1, (uint16*) &(Character), Enable);
+	}
+}
 
 
 
@@ -39,15 +42,17 @@ void delay_ms(uint32 Tms){
 	for(i=0;i<j;i++);
 }
 
-void init_RCC(){
-	//GPIOA Clock Enable
-	GPIOA_CLK_EN();
-	//GPIOB Clock Enable
-	GPIOB_CLK_EN();
-	//AFIO Clock Enable
-	AFIO_CLK_EN();
+#ifdef UART_Test
 
+int main(void)
+{	USART_PinConfig_t USART_Config = {USART_Mode_RX_TX, USART_BaudRate_115200,USART_Word_Length_8B, USART_Parity_Disabled, USART_StopBits_1, USART_FlowCTL_None, USART_IRQ_Enable_RXNE, MyIRQHandler};
+	MCAL_UART_Init(USART1, &USART_Config);
+	while(1){
+	}
 }
+
+
+#endif //UART_Test
 
 #ifdef EXTI_Test
 void init_GPIO(){
@@ -71,6 +76,12 @@ void MyIRQHandler(void){
 
 
 #ifdef GPIO_Test
+
+GPIO_PinConfig_t PB13 = {GPIO_PIN_13,GPIO_MODE_OUTPUT_PP,GPIO_Output_Speed_10M};
+GPIO_PinConfig_t PB1 = {GPIO_PIN_1,GPIO_MODE_OUTPUT_PP,GPIO_Output_Speed_10M};
+GPIO_PinConfig_t PA13 = {GPIO_PIN_13,GPIO_MODE_INPUT_FLO,};
+GPIO_PinConfig_t PA1 = {GPIO_PIN_1,GPIO_MODE_INPUT_FLO,};
+
 void init_GPIO(){
 	//PB13 OUTPUT PUSH_PULL
 	MCAL_GPIO_Init(GPIOB,&PB13);

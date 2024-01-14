@@ -1,0 +1,8 @@
+SPI_Stm32F103x8.c:28:6:MCAL_SPI_Init	24	static
+SPI_Stm32F103x8.c:165:6:MCAL_SPI_DeInit	16	static
+SPI_Stm32F103x8.c:179:6:MCAL_SPI_Send	24	static
+SPI_Stm32F103x8.c:196:6:MCAL_SPI_Read	24	static
+SPI_Stm32F103x8.c:211:6:MCAL_SPI_Send_Read	24	static
+SPI_Stm32F103x8.c:222:6:MCAL_SPI_Wait_TC	16	static
+SPI_Stm32F103x8.c:226:6:SPI1_IRQHandler	8	static
+SPI_Stm32F103x8.c:229:6:SPI2_IRQHandler	8	static

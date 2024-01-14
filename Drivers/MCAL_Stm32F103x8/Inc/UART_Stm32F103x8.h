@@ -113,10 +113,6 @@ typedef struct{
 #define USART_Status_NE                 (uint32)(1<<2)//Noise flag
 #define USART_Status_FE                 (uint32)(1<<1)//Framing error
 
-enum Polling_Mechanism{
-	Disable,
-	Enable
-};
 
 //-*-*-*-*-*-*-*-*-*-*-*-
 //Generic Macros:
@@ -154,16 +150,16 @@ void MCAL_UART_Wait_TC(USART_TypeDef* USARTx);
 
 // check on the Interrupt Source For taking Actions:
 
-#define TXREG_Empty(USARTx)       ((USARTx->CR1)&USART_IRQ_Enable_TXE)&&((USARTx->SR)&USART_Status_TXE)
-#define Tcomplete(USARTx)         ((USARTx->CR1)&USART_IRQ_Enable_TC)&&((USARTx->SR)&USART_Status_TC)
-#define Rcomplete(USARTx)         ((USARTx->CR1)&USART_IRQ_Enable_RXNE)&&((USARTx->SR)&USART_Status_RXNE)
-#define Overrun_E(USARTx)         ((USARTx->CR1)&USART_IRQ_Enable_ORE)&&((USARTx->SR)&USART_Status_ORE)
-#define IdleL_Detected(USARTx)    ((USARTx->CR1)&USART_IRQ_Enable_IDLE)&&((USARTx->SR)&USART_Status_IDLE)
-#define Parity_E(USARTx)          ((USARTx->CR1)&USART_IRQ_Enable_PE)&&((USARTx->SR)&USART_Status_PE)
-#define Break_F(USARTx)           ((USARTx->CR2)&(USART_IRQ_Enable_LBD >> 10))&&((USARTx->SR)&USART_Status_LBD)
-#define CTS_F(USARTx)             ((USARTx->CR3)&(USART_IRQ_Enable_CTS >> 20))&&((USARTx->SR)&USART_Status_CTS)
-#define Noise_F(USARTx)           ((USARTx->CR3)&(USART_IRQ_Enable_NE >> 20))&&((USARTx->SR)&USART_Status_NE)
-#define Framing_E(USARTx)         ((USARTx->CR3)&(USART_IRQ_Enable_FE >> 20))&&((USARTx->SR)&USART_Status_FE)
+#define USART_TXREG_Empty(USARTx)       ((USARTx->CR1)&USART_IRQ_Enable_TXE)&&((USARTx->SR)&USART_Status_TXE)
+#define USART_Tcomplete(USARTx)         ((USARTx->CR1)&USART_IRQ_Enable_TC)&&((USARTx->SR)&USART_Status_TC)
+#define USART_Rcomplete(USARTx)         ((USARTx->CR1)&USART_IRQ_Enable_RXNE)&&((USARTx->SR)&USART_Status_RXNE)
+#define USART_Overrun_E(USARTx)         ((USARTx->CR1)&USART_IRQ_Enable_ORE)&&((USARTx->SR)&USART_Status_ORE)
+#define USART_IdleL_Detected(USARTx)    ((USARTx->CR1)&USART_IRQ_Enable_IDLE)&&((USARTx->SR)&USART_Status_IDLE)
+#define USART_Parity_E(USARTx)          ((USARTx->CR1)&USART_IRQ_Enable_PE)&&((USARTx->SR)&USART_Status_PE)
+#define USART_Break_F(USARTx)           ((USARTx->CR2)&(USART_IRQ_Enable_LBD >> 10))&&((USARTx->SR)&USART_Status_LBD)
+#define USART_CTS_F(USARTx)             ((USARTx->CR3)&(USART_IRQ_Enable_CTS >> 20))&&((USARTx->SR)&USART_Status_CTS)
+#define USART_Noise_F(USARTx)           ((USARTx->CR3)&(USART_IRQ_Enable_NE >> 20))&&((USARTx->SR)&USART_Status_NE)
+#define USART_Framing_E(USARTx)         ((USARTx->CR3)&(USART_IRQ_Enable_FE >> 20))&&((USARTx->SR)&USART_Status_FE)
 
 
 #endif /* INC_UART_STM32F103X8_H_ */

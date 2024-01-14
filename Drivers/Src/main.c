@@ -24,17 +24,20 @@
 #include "GPIO_Stm32F103x8.h"
 #include "EXTI_Stm32F103x8.h"
 #include "UART_Stm32F103x8.h"
+#include "SPI_Stm32F103x8.h"
 
 #define frequency 8000000UL
-#define UART_Test
+#define SPI_Master_Test
 	uint8 Character;
-void MyIRQHandler(void){
-	if (Rcomplete(USART1)) {
+void MyUARTIRQHandler(void){
+	if (USART_Rcomplete(USART1)) {
 		MCAL_USART_Read(USART1, (uint16*) &(Character), Disable);
 		MCAL_UART_Send(USART1, (uint16*) &(Character), Enable);
+		MCAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,GPIO_PIN_LOW);
+		MCAL_SPI_Send_Read(SPI1, (uint16*) &(Character), Enable);
+		MCAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,GPIO_PIN_HIGH);
 	}
 }
-
 
 
 void delay_ms(uint32 Tms){
@@ -42,10 +45,25 @@ void delay_ms(uint32 Tms){
 	for(i=0;i<j;i++);
 }
 
+#ifdef SPI_Master_Test
+int main(void)
+{	USART_PinConfig_t USART_Config = {USART_Mode_RX_TX, USART_BaudRate_115200,USART_Word_Length_8B, USART_Parity_Disabled, USART_StopBits_1, USART_FlowCTL_None, USART_IRQ_Enable_RXNE, MyUARTIRQHandler};
+	MCAL_UART_Init(USART1, &USART_Config);
+	SPI_PinConfig_t SPI_Config = {SPI_DeviceMode_MASTER, SPI_CommunicationMode_FD, SPI_ConnectionMode_PtoP, SPI_FrameFormat_MSBFirst, SPI_DataSize_8bit, SPI_CLKPolarity_IDLE_HIGH, SPI_CLKPhase_2nd_CLKtran, SPI_NSS_SOFT_MASTER, SPI_Prescaler_fPCLK_8, SPI_IRQ_ENABLE_None};
+	MCAL_SPI_Init(SPI1, &SPI_Config);
+	GPIO_PinConfig_t PA4 = {GPIO_PIN_4,GPIO_MODE_OUTPUT_PP,GPIO_Output_Speed_10M};
+	MCAL_GPIO_Init(GPIOA,&PA4);
+	MCAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,GPIO_PIN_HIGH);
+
+	while(1){
+	}
+}
+#endif
+
 #ifdef UART_Test
 
 int main(void)
-{	USART_PinConfig_t USART_Config = {USART_Mode_RX_TX, USART_BaudRate_115200,USART_Word_Length_8B, USART_Parity_Disabled, USART_StopBits_1, USART_FlowCTL_None, USART_IRQ_Enable_RXNE, MyIRQHandler};
+{	USART_PinConfig_t USART_Config = {USART_Mode_RX_TX, USART_BaudRate_115200,USART_Word_Length_8B, USART_Parity_Disabled, USART_StopBits_1, USART_FlowCTL_None, USART_IRQ_Enable_RXNE, MyUARTIRQHandler};
 	MCAL_UART_Init(USART1, &USART_Config);
 	while(1){
 	}

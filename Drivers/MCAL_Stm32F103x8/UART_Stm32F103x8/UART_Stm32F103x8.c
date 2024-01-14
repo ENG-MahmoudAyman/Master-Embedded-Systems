@@ -16,12 +16,21 @@ uint16 USARTx_Word_Length_Parity[3];
  *                               APIs Supported by "MCAL UART DRIVER"
  * ==================================================================================================
  */
+
+/**================================================================
+* @Fn               - MCAL_UART_Init
+* @brief            - Initialize USART specified parameters & GPIO Pins
+* @param [in]       - USARTx: Selected USART 1/2/3
+* @param [in]       - USART_Config: pointer to USART_PinConfig_t structure that contains the config parameters
+* @retval           - None
+* Note              - None
+*/
 void MCAL_UART_Init(USART_TypeDef* USARTx, USART_PinConfig_t* USART_Config){
 	uint32 PCLK;
 	GPIO_PinConfig_t PinConfig;
 	AFIO_CLK_EN();//AFIO Clock Enable
 	GPIOA_CLK_EN();//GPIOA Clock Enable
-	if(USARTx == USART1){USART1_CLK_EN();PCLK = MCAL_RCC_GetPCLK1_Freq(); USARTx_Word_Length_Parity[0] = USART_Config->USART_Word_Length | USART_Config->USART_Parity;
+	if(USARTx == USART1){USART1_CLK_EN();PCLK = MCAL_RCC_GetPCLK2_Freq(); USARTx_Word_Length_Parity[0] = USART_Config->USART_Word_Length | USART_Config->USART_Parity;
 		GP_IRQ_UART_CallBack[0] = USART_Config->P_IRQ_CallBack;
 		if (USART_Config->USART_Mode & USART_Mode_TX) {
 			//PA9 TX;
@@ -51,7 +60,7 @@ void MCAL_UART_Init(USART_TypeDef* USARTx, USART_PinConfig_t* USART_Config){
 	}
 
 	}
-	else if(USARTx == USART2){USART2_CLK_EN();PCLK = MCAL_RCC_GetPCLK2_Freq(); USARTx_Word_Length_Parity[1] = USART_Config->USART_Word_Length | USART_Config->USART_Parity;
+	else if(USARTx == USART2){USART2_CLK_EN();PCLK = MCAL_RCC_GetPCLK1_Freq(); USARTx_Word_Length_Parity[1] = USART_Config->USART_Word_Length | USART_Config->USART_Parity;
 		GP_IRQ_UART_CallBack[1] = USART_Config->P_IRQ_CallBack;
 		if (USART_Config->USART_Mode & USART_Mode_TX) {
 			//PA2 TX;
@@ -81,7 +90,7 @@ void MCAL_UART_Init(USART_TypeDef* USARTx, USART_PinConfig_t* USART_Config){
 		}
 
 	}
-	else if(USARTx == USART3){USART3_CLK_EN();PCLK = MCAL_RCC_GetPCLK2_Freq(); USARTx_Word_Length_Parity[2] = USART_Config->USART_Word_Length | USART_Config->USART_Parity;
+	else if(USARTx == USART3){USART3_CLK_EN();PCLK = MCAL_RCC_GetPCLK1_Freq(); USARTx_Word_Length_Parity[2] = USART_Config->USART_Word_Length | USART_Config->USART_Parity;
 		GP_IRQ_UART_CallBack[2] = USART_Config->P_IRQ_CallBack;
 		GPIOB_CLK_EN();//GPIOB Clock Enable
 		if (USART_Config->USART_Mode & USART_Mode_TX) {
@@ -127,11 +136,27 @@ void MCAL_UART_Init(USART_TypeDef* USARTx, USART_PinConfig_t* USART_Config){
 		else if(USARTx == USART3){NVIC_IRQ39_USART3_Enable;}
 	}
 }
+/**================================================================
+* @Fn               - MCAL_UART_DeInit
+* @brief            - Reset USART And NVIC in Cortex M3
+* @param [in]       - USARTx: Selected USART 1/2/3
+* @retval           - None
+* Note              - None
+*/
 void MCAL_UART_DeInit(USART_TypeDef* USARTx){
 	if(USARTx == USART1){USART1_RESET();NVIC_IRQ37_USART1_Disable;}
 	else if(USARTx == USART2){USART2_RESET();NVIC_IRQ38_USART2_Disable;}
 	else if(USARTx == USART3){USART3_RESET();NVIC_IRQ39_USART3_Disable;}
 }
+/**================================================================
+* @Fn               - MCAL_UART_Send
+* @brief            - Send Data using USART
+* @param [in]       - USARTx: Selected USART 1/2/3
+* @param [in]       - Data: Pointer To data to be Sent
+* @param [in]       - PollingEN: enum to specify Polling For Data Sending
+* @retval           - None
+* Note              - None
+*/
 void MCAL_UART_Send(USART_TypeDef* USARTx, uint16* Data, enum Polling_Mechanism PollingEN){
 	if(PollingEN == Enable){
 		while(!( USARTx->SR & (1<<7)));
@@ -148,6 +173,15 @@ void MCAL_UART_Send(USART_TypeDef* USARTx, uint16* Data, enum Polling_Mechanism 
 		USARTx->DR = (*Data & (uint16)0xFF);
 	}
 }
+/**================================================================
+* @Fn               - MCAL_USART_Read
+* @brief            - Read Data From USART
+* @param [in]       - USARTx: Selected USART 1/2/3
+* @param [in]       - Data: Pointer To data to be Sent
+* @param [in]       - PollingEN: enum to specify Polling For Data Sending
+* @retval           - None
+* Note              - None
+*/
 void MCAL_USART_Read(USART_TypeDef* USARTx, uint16* Data, enum Polling_Mechanism PollingEN){
 	if(PollingEN == Enable){
 		while(!( USARTx->SR & (1<<5)));
@@ -174,7 +208,13 @@ void MCAL_USART_Read(USART_TypeDef* USARTx, uint16* Data, enum Polling_Mechanism
 		}
 	}
 }
-
+/**================================================================
+* @Fn               - MCAL_UART_Wait_TC
+* @brief            - Wait Until Transmission Complete
+* @param [in]       - USARTx: Selected USART 1/2/3
+* @retval           - None
+* Note              - None
+*/
 void MCAL_UART_Wait_TC(USART_TypeDef* USARTx){
 	while(!(USARTx->SR & (1<<6)));
 }

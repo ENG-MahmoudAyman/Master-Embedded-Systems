@@ -62,6 +62,9 @@
 #define USART2_BASE                  0x40004400UL
 #define USART3_BASE                  0x40004800UL
 
+//SPI:
+#define SPI2_BASE                    0x40003800UL
+
 //Base addresses APB2 BUS Peripherals
 //-----------------------------
 
@@ -78,7 +81,8 @@
 #define GPIOE_BASE                   0x40011800UL
 //USART:
 #define USART1_BASE                  0x40013800UL
-
+//SPI:
+#define SPI1_BASE                    0x40013000UL
 
 //-*-*-*-*-*-*-*-*-*-*-*-
 //Peripheral register:
@@ -133,6 +137,18 @@ typedef struct{
 	vuint32 CR3;
 	vuint32 GTPR;
 }USART_TypeDef;
+//SPI Peripheral register:
+typedef struct{
+	vuint32 CR1;
+	vuint32 CR2;
+	vuint32 SR;
+	vuint32 DR;
+	vuint32 CRCPR;
+	vuint32 RXCRCR;
+	vuint32 TXCRCR;
+	vuint32 I2SCFGR;
+	vuint32 I2SPR;
+}SPI_TypeDef;
 //-*-*-*-*-*-*-*-*-*-*-*-
 //Peripheral Instants:
 //-*-*-*-*-*-*-*-*-*-*-*
@@ -158,6 +174,10 @@ typedef struct{
 #define USART2                      ((USART_TypeDef *)USART2_BASE)
 #define USART3                      ((USART_TypeDef *)USART3_BASE)
 
+//SPI:
+#define SPI1                        ((SPI_TypeDef *)SPI1_BASE)
+#define SPI2                        ((SPI_TypeDef *)SPI2_BASE)
+
 //-*-*-*-*-*-*-*-*-*-*-*-
 //Generic Macros:
 //-*-*-*-*-*-*-*-*-*-*-*
@@ -173,9 +193,11 @@ typedef struct{
 #define GPIOD_CLK_EN()              (RCC->APB2ENR|=(1<<5))
 #define GPIOE_CLK_EN()              (RCC->APB2ENR|=(1<<6))
 #define USART1_CLK_EN()             (RCC->APB2ENR|=(1<<14))
+#define SPI1_CLK_EN()               (RCC->APB2ENR|=(1<<12))
 
 #define USART2_CLK_EN()             (RCC->APB1ENR|=(1<<17))
 #define USART3_CLK_EN()             (RCC->APB1ENR|=(1<<18))
+#define SPI2_CLK_EN()               (RCC->APB1ENR|=(1<<14))
 
 //RCC Reset:
 
@@ -186,9 +208,12 @@ typedef struct{
 #define GPIOD_RESET()               (RCC->APB2RSTR|=(1<<5))
 #define GPIOE_RESET()               (RCC->APB2RSTR|=(1<<6))
 #define USART1_RESET()              (RCC->APB2RSTR|=(1<<14))
+#define SPI1_RESET()                (RCC->APB2RSTR|=(1<<12))
 
 #define USART2_RESET()              (RCC->APB1RSTR|=(1<<17))
 #define USART3_RESET()              (RCC->APB1RSTR|=(1<<18))
+#define SPI2_RESET()                (RCC->APB1RSTR|=(1<<14))
+
 
 //-*-*-*-*-*-*-*-*-*-*-*-
 //IVT:
@@ -216,6 +241,9 @@ typedef struct{
 #define USART2_IRQ                    38
 #define USART3_IRQ                    39
 
+#define SPI1_IRQ                      35
+#define SPI2_IRQ                      36
+
 //-*-*-*-*-*-*-*-*-*-*-*-
 //NVIC IRQ Enable/Disable Macros:
 //-*-*-*-*-*-*-*-*-*-*-*
@@ -231,6 +259,9 @@ typedef struct{
 #define NVIC_IRQ38_USART2_Enable      (NVIC_ISER1|=(1<<6))
 #define NVIC_IRQ39_USART3_Enable      (NVIC_ISER1|=(1<<7))
 
+#define NVIC_IRQ35_SPI1_Enable        (NVIC_ISER1|=(1<<3))
+#define NVIC_IRQ36_SPI2_Enable        (NVIC_ISER1|=(1<<4))
+
 #define NVIC_IRQ6_EXTI0_Disable       (NVIC_ICER0|=(1<<EXTI0_IRQ))
 #define NVIC_IRQ7_EXTI1_Disable       (NVIC_ICER0|=(1<<EXTI1_IRQ))
 #define NVIC_IRQ8_EXTI2_Disable       (NVIC_ICER0|=(1<<EXTI2_IRQ))
@@ -243,13 +274,21 @@ typedef struct{
 #define NVIC_IRQ38_USART2_Disable     (NVIC_ICER1|=(1<<6))
 #define NVIC_IRQ39_USART3_Disable     (NVIC_ICER1|=(1<<7))
 
+#define NVIC_IRQ35_SPI1_Disable       (NVIC_ICER1|=(1<<3))
+#define NVIC_IRQ36_SPI2_Disable       (NVIC_ICER1|=(1<<4))
+
 //-*-*-*-*-*-*-*-*-*-*-*-
 //Generic Variables:
 //-*-*-*-*-*-*-*-*-*-*-*
 
+enum Polling_Mechanism{
+	Disable,
+	Enable
+};
+
 void (* GP_IRQ_EXTI_CallBack[16]) (void);
 void (* GP_IRQ_UART_CallBack[3]) (void);
-
+void (* GP_IRQ_SPI_CallBack[2]) (void);
 
 
 #endif /* INC_STM32F103X8_H_ */

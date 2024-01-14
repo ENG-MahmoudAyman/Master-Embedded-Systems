@@ -11,6 +11,7 @@ RM := rm -rf
 -include Startup/subdir.mk
 -include Src/subdir.mk
 -include MCAL_Stm32F103x8/UART_Stm32F103x8/subdir.mk
+-include MCAL_Stm32F103x8/SPI_Stm32F103x8/subdir.mk
 -include MCAL_Stm32F103x8/RCC_Stm32F103x8/subdir.mk
 -include MCAL_Stm32F103x8/GPIO_Stm32F103x8/subdir.mk
 -include MCAL_Stm32F103x8/EXTI_Stm32F103x8/subdir.mk

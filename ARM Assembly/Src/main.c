@@ -27,206 +27,124 @@
 #include "SPI_Stm32F103x8.h"
 #include "core_cm3.h"
 
-#define frequency 8000000UL
-#define Last
-
-uint8 TaskA_flag = 0,TaskB_flag = 0, IRQ_flag = 0;
-
-#define TaskA_Stack_Size  100
-#define TaskB_Stack_Size  100
-
-extern _estack;
-
-//Main Stack
-unsigned int _S_MSP = &_estack;
-unsigned int _E_MSP;
-
-//process stack Task A
-unsigned int _S_PSP_TA;
-unsigned int _E_PSP_TA;
-
-//process stack Task B
-unsigned int _S_PSP_TB;
-unsigned int _E_PSP_TB;
-
-#define OS_SET_PSP(add)              __asm volatile ("MOV R0,%[in] \n\t""MSR PSP,R0" : :[in]"r"(add))
-#define OS_SWITCH_SP_to_PSP          __asm volatile ("MRS R0,CONTROL \n\t""ORR R0,R0, #0x02 \n\t""MSR CONTROL,R0")
-#define OS_SWITCH_SP_to_MSP          __asm volatile ("MRS R0,CONTROL \n\t""AND R0,R0, #0x05 \n\t""MSR CONTROL,R0")
-#define OS_Generate_Exception        __asm volatile ("SVC #0x03")
-#define Change_CPU_access_level_to(CPU_access)  switch (CPU_access) {\
-	case privileged:\
-		__asm(" MRS R0, CONTROL \n\t"" LSR R0,R0, #0x1 \n\t"" LSL R0,R0, #0x1 \n\t"" MSR CONTROL, R0 " );\
-		break;\
-	case unprivileged:\
-		__asm(" MRS R0, CONTROL \n\t"" ORR R0,R0, #0x1 \n\t"" MSR CONTROL, R0" );\
-		break;\
-}
-
-void delay_ms(uint32 Tms){
-	uint32 i,j=Tms*(frequency/1000);
-	for(i=0;i<j;i++);
-}
+#include "Scheduler.h"
 
 
-enum CPU_access_level{
-	privileged,
-	unprivileged
-};
+void TASK1();
+void TASK2();
+void TASK3();
 
+Task_Ref MY_RTOS_Task1;
+Task_Ref MY_RTOS_Task2;
+Task_Ref MY_RTOS_Task3;
+Mutex_Ref Mutex1;
 
-#ifdef First
+uint8 Task1Indic,Task2Indic,Task3Indic;
 
-void SVC_Handler(){
-	Change_CPU_access_level_to(privileged);
-
-}
-#endif /*First*/
-
-#ifdef Last
-
-void OS_SVC_Services(int* StackFramePointer){
-
-	uint8 SVC_number;
-	uint32 Val1,Val2;
-
-	SVC_number = (*(uint8*)(((uint8*)StackFramePointer[6])-2));
-	Val1 = StackFramePointer[0];
-	Val2 = StackFramePointer[1];
-
-	switch(SVC_number){
-	case 1:
-		StackFramePointer[0] = Val1+Val2;//add
-		break;
-	case 2:
-		StackFramePointer[0] = Val1-Val2;//sub
-		break;
-	case 3:
-		StackFramePointer[0] = Val1*Val2;//mult
-		break;
-	}
-
-}
-
-__attribute ((naked)) void SVC_Handler(){
-	__asm("TST LR, #4 \n\t"
-			"ITE EQ \n\t"
-			"MRSEQ R0,MSP \n\t"
-			"MRSNE R0,PSP \n\t"
-			"B OS_SVC_Services \n\t");
-}
-
-#endif /*Last*/
-
-void MainOs(){
-	//Main Stack
-	_E_MSP = (_S_MSP - 512);
-
-	//Task A
-	_S_PSP_TA = (_E_MSP - 8);
-	_E_PSP_TA = (_S_PSP_TA - TaskA_Stack_Size);
-
-	//Task B
-	_S_PSP_TB = (_E_PSP_TA - 8);
-	_E_PSP_TB = (_S_PSP_TB - TaskB_Stack_Size);
-}
-
-void MyIRQHandler(void);
-
-GPIO_PinConfig_t PB1 = {GPIO_PIN_1,GPIO_MODE_OUTPUT_PP,GPIO_Output_Speed_10M};
-EXTI_PinConfig_t PB0 = {EXTI0_PB0, EXTI_Trigger_RISING, EXTI_IRQ_Enable,MyIRQHandler};
-void init_GPIO(){
-	//PB1 OUTPUT PUSH_PULL
-	MCAL_GPIO_Init(GPIOB,&PB1);
-}
-
-uint32 TaskA (uint16 a ,uint16 b){
-	return a+b;
-}
-
-uint32 TaskB (uint16 a ,uint16 b ,uint16 c){
-	return a+b+c;
-}
-
-int OS_SVC_Set(int a, int b, int SVC_ID){
-
-	int result;
-	switch(SVC_ID){
-	case 1:
-		__asm("SVC #0x1");//add
-		break;
-	case 2:
-		__asm("SVC #0x2");//sub
-		break;
-	case 3:
-		__asm("SVC #0x3");//mult
-		break;
-	}
-
-	return result;
-}
+uint8 payload[3] = {1,2,3};
 
 int main(void)
-{
-	#ifdef First
-	//init_RCC();
-	init_GPIO();
-	MCAL_EXTI_Init(&PB0);
+{	MY_RTOS_ERROR_ID error = NO_ERROR;
+	HW_init();
+	MY_RTOS_init();
+	//Configure Task1
+	MY_RTOS_Config_Task( MY_RTOS_Task1 ,"MY RTOS Task1" , 3, TASK1, 1024);
+	/*strcpy(MY_RTOS_Task1.TaskName, "MY RTOS Task1");
+	MY_RTOS_Task1.Priority = 3;
+	MY_RTOS_Task1.p_TaskEntry = TASK1;
+	MY_RTOS_Task1.Stack_Size = 1024;*/
 
-	MainOs();
-	#endif /*First*/
+	//Configure Task2
+	MY_RTOS_Config_Task( MY_RTOS_Task2 ,"MY RTOS Task2" , 2, TASK2, 1024);
+	/*strcpy(MY_RTOS_Task2.TaskName, "MY RTOS Task2");
+	MY_RTOS_Task2.Priority = 2;
+	MY_RTOS_Task2.p_TaskEntry = TASK2;
+	MY_RTOS_Task2.Stack_Size = 1024;*/
 
-	#ifdef Last
-	IRQ_flag = 1;
-	IRQ_flag = OS_SVC_Set(2, 1, 1);
-	IRQ_flag = OS_SVC_Set(2, 1, 2);
-	IRQ_flag = OS_SVC_Set(2, 1, 3);
-	#endif /*Last*/
+	//Configure Task3
+	MY_RTOS_Config_Task( MY_RTOS_Task3 ,"MY RTOS Task3" , 1, TASK3, 1024);
+	/*strcpy(MY_RTOS_Task3.TaskName, "MY RTOS Task3");
+	MY_RTOS_Task3.Priority = 1;
+	MY_RTOS_Task3.p_TaskEntry = TASK3;
+	MY_RTOS_Task3.Stack_Size = 1024;*/
 
+	//configure Mutex1
+	MY_RTOS_Config_Mutex(Mutex1, "Mutex Task 1&3", 3 , payload);
+	/*strcpy(Mutex1.Mutex_Name,"Mutex Task 1&3");
+	Mutex1.Payload_Size = 3;
+	Mutex1.Ppayload = payload;*/
+
+	error += MY_RTOS_Create_Task(&MY_RTOS_Task1);
+	error += MY_RTOS_Create_Task(&MY_RTOS_Task2);
+	error += MY_RTOS_Create_Task(&MY_RTOS_Task3);
+
+	MY_RTOS_Activate_Task(&MY_RTOS_Task1);
+	//MY_RTOS_Activate_Task(&MY_RTOS_Task2);
+	//MY_RTOS_Activate_Task(&MY_RTOS_Task3);
+
+	MY_RTOS_StartOS();
+
+	while (1) {
+
+	}
+
+
+}
+
+void TASK1(){
+
+	static int count = 0;
 	while(1){
-	#ifdef First
-			__asm("NOP");
-			if(TaskA_flag == 1){
-				OS_SET_PSP(_S_PSP_TA);//PSP = TA Stack
-				OS_SWITCH_SP_to_PSP; //switch from MSP to PSP
-				Change_CPU_access_level_to(unprivileged);//switch from privileged to unprivileged
-				TaskA_flag = TaskA(1,2);
-				OS_Generate_Exception;
-				OS_SWITCH_SP_to_MSP; //switch from PSP to MSP
-
-			}
-			else if(TaskB_flag == 1){
-				OS_SET_PSP(_S_PSP_TB);//PSP = TB Stack
-				OS_SWITCH_SP_to_PSP; //switch from MSP to PSP
-				Change_CPU_access_level_to(unprivileged);//switch from privileged to unprivileged
-				TaskB_flag = TaskB(1,2,3);
-				OS_Generate_Exception;
-				OS_SWITCH_SP_to_MSP; //switch from PSP to MSP
-			}
-	#endif /*First*/
-
-	#ifdef Last
-
-	#endif /*Last*/
+		Task1Indic ^= 1;
+		count++;
+		if(count == 500){
+			MY_RTOS_Acquire_Mutex(&Mutex1, &MY_RTOS_Task1);
+			MY_RTOS_Activate_Task(&MY_RTOS_Task2);
+		}
+		if(count == 1000){
+			count = 0;
+			MY_RTOS_Release_Mutex(&Mutex1);
+		}
 	}
+
 }
 
+void TASK2(){
 
-
-void MyIRQHandler(void){
-
-#ifdef First
-	if(IRQ_flag == 0){
-		TaskA_flag = 1;
-		IRQ_flag = 1;
-
+	static int count = 0;
+	while(1){
+		Task2Indic ^= 1;
+		count++;
+		if(count == 500){
+			MY_RTOS_Activate_Task(&MY_RTOS_Task3);
+		}
+		if(count == 1000){
+			MY_RTOS_Terminate_Task(&MY_RTOS_Task2);
+			count = 0;
+		}
 	}
-	else if(IRQ_flag == 1){
-		TaskB_flag = 1;
-		IRQ_flag = 0;
-	}
-#endif /*First*/
 
 }
+
+void TASK3(){
+	static int count = 0;
+	while(1){
+		Task3Indic ^= 1;
+		count++;
+		if(count == 50){
+			MY_RTOS_Acquire_Mutex(&Mutex1, &MY_RTOS_Task3);
+			MY_RTOS_Acquire_Mutex(&Mutex1, &MY_RTOS_Task3);
+		}
+		if(count == 1000){
+			MY_RTOS_Acquire_Mutex(&Mutex1, &MY_RTOS_Task3);
+			MY_RTOS_Release_Mutex(&Mutex1);
+			MY_RTOS_Terminate_Task(&MY_RTOS_Task3);
+			count = 0;
+		}
+	}
+
+}
+
 
 
 

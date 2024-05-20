@@ -10,7 +10,6 @@ RM := rm -rf
 -include sources.mk
 -include Startup/subdir.mk
 -include Src/subdir.mk
--include MY_RTOS/subdir.mk
 -include MCAL_Stm32F103x8/UART_Stm32F103x8/subdir.mk
 -include MCAL_Stm32F103x8/SPI_Stm32F103x8/subdir.mk
 -include MCAL_Stm32F103x8/RCC_Stm32F103x8/subdir.mk
@@ -48,11 +47,12 @@ ARM.bin \
 
 
 # All Target
-all: ARM.axf secondary-outputs
+all: ARM.elf secondary-outputs
 
 # Tool invocations
-ARM.axf: $(OBJS) $(USER_OBJS) D:\MY\ Courses\Embedded\ Kero\Code\Master-Embedded-Systems\ARM\ Assembly\STM32F103C8TX_FLASH.ld
-	arm-none-eabi-gcc -gdwarf-2 -o "ARM.axf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"D:\MY Courses\Embedded Kero\Code\Master-Embedded-Systems\ARM Assembly\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ARM.map" -Wl,--gc-sections -static -gdwarf-2  -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+ARM.elf: $(OBJS) $(USER_OBJS) D:\MY\ Courses\Embedded\ Kero\Code\Master-Embedded-Systems\ARM\ Assembly\STM32F103C8TX_FLASH.ld
+	arm-none-eabi-gcc -o "ARM.axf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"D:\MY Courses\Embedded Kero\Code\Master-Embedded-Systems\ARM Assembly\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ARM.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	arm-none-eabi-objdump -D ARM.axf > ARM.s
 	@echo 'Finished building target: $@'
 	@echo ' '
 

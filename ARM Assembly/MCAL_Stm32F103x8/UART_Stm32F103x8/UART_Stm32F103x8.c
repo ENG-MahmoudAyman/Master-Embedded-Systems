@@ -161,7 +161,7 @@ void MCAL_UART_Send(USART_TypeDef* USARTx, uint16* Data, enum Polling_Mechanism 
 	if(PollingEN == Enable){
 		while(!( USARTx->SR & (1<<7)));
 	}
-	uint16* Word_Length_Parity;
+	uint16* Word_Length_Parity = 0;
 	if(USARTx == USART1){Word_Length_Parity = &USARTx_Word_Length_Parity[0];}
 	else if(USARTx == USART2){Word_Length_Parity = &USARTx_Word_Length_Parity[1];}
 	else if(USARTx == USART3){Word_Length_Parity = &USARTx_Word_Length_Parity[2];}
@@ -186,7 +186,7 @@ void MCAL_USART_Read(USART_TypeDef* USARTx, uint16* Data, enum Polling_Mechanism
 	if(PollingEN == Enable){
 		while(!( USARTx->SR & (1<<5)));
 	}
-	uint16* Word_Length_Parity;
+	uint16* Word_Length_Parity = 0 ;
 	if(USARTx == USART1){Word_Length_Parity = &USARTx_Word_Length_Parity[0];}
 	else if(USARTx == USART2){Word_Length_Parity = &USARTx_Word_Length_Parity[1];}
 	else if(USARTx == USART3){Word_Length_Parity = &USARTx_Word_Length_Parity[2];}

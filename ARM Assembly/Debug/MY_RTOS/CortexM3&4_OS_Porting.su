@@ -1,0 +1,11 @@
+core_cm3.h:1642:22:__NVIC_SetPriority	16	static
+core_cm3.h:1838:26:SysTick_Config	16	static
+CortexM3&4_OS_Porting.c:13:8:HardFault_Handler	4	static
+CortexM3&4_OS_Porting.c:16:8:MemManage_Handler	4	static
+CortexM3&4_OS_Porting.c:19:8:BusFault_Handler	4	static
+CortexM3&4_OS_Porting.c:22:8:UsageFault_Handler	4	static
+CortexM3&4_OS_Porting.c:26:30:SVC_Handler	0	static,ignoring_inline_asm
+CortexM3&4_OS_Porting.c:34:8:HW_init	8	static
+CortexM3&4_OS_Porting.c:44:8:Trigger_OS_PendSV	4	static
+CortexM3&4_OS_Porting.c:48:8:StartTicker	8	static
+CortexM3&4_OS_Porting.c:54:8:SysTick_Handler	8	static

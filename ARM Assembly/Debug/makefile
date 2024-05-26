@@ -52,7 +52,7 @@ all: ARM.axf secondary-outputs
 
 # Tool invocations
 ARM.axf: $(OBJS) $(USER_OBJS) D:\MY\ Courses\Embedded\ Kero\Code\Master-Embedded-Systems\ARM\ Assembly\STM32F103C8TX_FLASH.ld
-	arm-none-eabi-gcc -gdwarf-2 -o "ARM.axf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"D:\MY Courses\Embedded Kero\Code\Master-Embedded-Systems\ARM Assembly\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ARM.map" -Wl,--gc-sections -static -gdwarf-2  -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	arm-none-eabi-gcc -g -gdwarf-2 -o "ARM.axf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"D:\MY Courses\Embedded Kero\Code\Master-Embedded-Systems\ARM Assembly\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ARM.map" -Wl,--gc-sections -static -gdwarf-2  -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

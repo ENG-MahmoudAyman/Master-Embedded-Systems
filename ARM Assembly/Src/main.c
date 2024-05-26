@@ -39,12 +39,17 @@ Task_Ref MY_RTOS_Task2;
 Task_Ref MY_RTOS_Task3;
 Mutex_Ref Mutex1;
 
-uint8 Task1Indic,Task2Indic,Task3Indic;
+uint8 Task1Indic,Task2Indic,Task3Indic,handler;
+
+void MyIRQHandler(void);
 
 uint8 payload[3] = {1,2,3};
+EXTI_PinConfig_t PB0 = {EXTI0_PB0, EXTI_Trigger_RISING, EXTI_IRQ_Enable,MyIRQHandler};
+
 
 int main(void)
 {	MY_RTOS_ERROR_ID error = NO_ERROR;
+	MCAL_EXTI_Init(&PB0);
 	HW_init();
 	MY_RTOS_init();
 	//Configure Task1
@@ -143,6 +148,10 @@ void TASK3(){
 		}
 	}
 
+}
+
+void MyIRQHandler(void){
+	handler ^=1;
 }
 
 

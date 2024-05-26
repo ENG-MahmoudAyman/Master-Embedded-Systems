@@ -11,6 +11,7 @@
 #include "MY_RTOS_FIFO.h"
 
 
+
 void MY_RTOS_IDLE_TASK(void);
 void MY_RTOS_Create_TaskStack(Task_Ref* Tref);
 void MY_RTOS_Create_MainStack(void);
@@ -21,7 +22,8 @@ void DecideNext(void);
 typedef enum{
 	SVC_TerminateTask,
 	SVC_ActivateTask,
-	SVC_TaskWaitingTime
+	SVC_TaskWaitingTime,
+	SVC_Switch_Priviledge
 }SVC_ID;
 
 void OS_SVC_Set(SVC_ID ID);
@@ -177,10 +179,16 @@ void MY_RTOS_IDLE_TASK(void){
 
 }
 
+#ifdef MutexUsed
 
 MY_RTOS_ERROR_ID MY_RTOS_Acquire_Mutex(Mutex_Ref* Mref ,Task_Ref* Tref){
+
 	if(Mref->Current_User == NULL)/*Free*/{
+		OS_SVC_Set(SVC_Switch_Priviledge);
+		OS_Enter_Critical_Section;
 		Mref->Current_User = Tref;
+		OS_Exit_Critical_Section;
+		OS_SWITCH_CPU_access_level_to_unprivileged;
 		return NO_ERROR;
 	}
 	else{
@@ -190,8 +198,12 @@ MY_RTOS_ERROR_ID MY_RTOS_Acquire_Mutex(Mutex_Ref* Mref ,Task_Ref* Tref){
 		uint8 i = 0;
 		for(i = 0; i < MutexMaxWaiting; i++){
 			if(Mref->Next_Users[i] == NULL)/*Reserve*/{
+				OS_SVC_Set(SVC_Switch_Priviledge);
+				OS_Enter_Critical_Section;
 				Mref->Next_Users[i] = Tref;
 				Tref->TaskState = Suspend;
+				OS_Exit_Critical_Section;
+				OS_SWITCH_CPU_access_level_to_unprivileged;
 				OS_SVC_Set(SVC_TerminateTask);
 				return NO_ERROR;
 			}
@@ -201,8 +213,9 @@ MY_RTOS_ERROR_ID MY_RTOS_Acquire_Mutex(Mutex_Ref* Mref ,Task_Ref* Tref){
 
 }
 void MY_RTOS_Release_Mutex(Mutex_Ref* Mref){
-
 	if(Mref->Current_User != NULL)/*Taken*/{
+		OS_SVC_Set(SVC_Switch_Priviledge);
+		OS_Enter_Critical_Section;
 		Mref->Current_User = Mref->Next_Users[0];
 		uint8 i = 0;
 		for(i = 0; i < MutexMaxWaiting-1; i++){
@@ -214,10 +227,13 @@ void MY_RTOS_Release_Mutex(Mutex_Ref* Mref){
 			}
 		}
 		Mref->Current_User->TaskState = Waiting;
+		OS_Exit_Critical_Section;
+		OS_SWITCH_CPU_access_level_to_unprivileged;
 		OS_SVC_Set(SVC_ActivateTask);
 	}
-
 }
+
+#endif
 
 /*----- Handler Section ---- */
 
@@ -315,14 +331,16 @@ void OS_SVC(int* StackFramePointer){
 		break;
 	case SVC_TaskWaitingTime:
 		MY_RTOS_Update_SchedulerTable();
+		break;
 
+	case SVC_Switch_Priviledge:
+		OS_SWITCH_CPU_access_level_to_privileged
 		break;
 	}
 
 }
 
 void MY_RTOS_Update_SchedulerTable(void){
-
 	//Bubble sort SchTable Higher ---> Lower Priority
 	BubbleSort();
 	//Free Ready Queue
@@ -347,7 +365,6 @@ void MY_RTOS_Update_SchedulerTable(void){
 			}
 		}
 	}
-
 }
 
 void MY_RTOS_Update_TaskingTime(void){
@@ -374,7 +391,10 @@ void OS_SVC_Set(SVC_ID ID){
 		__asm("SVC #0x1");
 		break;
 	case SVC_TaskWaitingTime:
-		__asm("SVC #0x2");//mult
+		__asm("SVC #0x2");//Waiting
+		break;
+	case SVC_Switch_Priviledge:
+		__asm("SVC #0x3");//Convert Priviledge
 		break;
 
 	}

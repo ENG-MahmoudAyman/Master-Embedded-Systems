@@ -30,6 +30,8 @@ extern int _eheap  ;
 
 #define OS_SaveContext(Register , PSP_Pointer)     __asm volatile("MOV %[PSP], " #Register : [PSP] "=r" (*(PSP_Pointer)))
 #define OS_RestoreContext(Register , PSP_Pointer)  __asm volatile("MOV " #Register ", %[PSP] "  : :[PSP] "r" (*(PSP_Pointer)))
+#define OS_Enter_Critical_Section		__asm volatile ("cpsid i" : : : "memory")//Disable Interrupt
+#define OS_Exit_Critical_Section		__asm volatile ("cpsie i" : : : "memory")//Enable Interrupt
 
 
 void HW_init();

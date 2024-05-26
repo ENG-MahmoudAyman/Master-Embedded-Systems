@@ -7,6 +7,7 @@
 
 #include "CortexM3&4_OS_Porting.h"
 
+uint32 x = 0;
 void DecideNext(void);
 void MY_RTOS_Update_TaskingTime(void);
 
@@ -39,6 +40,8 @@ void MY_RTOS_Update_TaskingTime(void);
 
 	  //Decrease PenSV priority = SysTick timer
 	  __NVIC_SetPriority(PendSV_IRQn, 15);
+	 // __NVIC_SetPriority(EXTI0_IRQn,22);
+
   }
 
   void Trigger_OS_PendSV(){
